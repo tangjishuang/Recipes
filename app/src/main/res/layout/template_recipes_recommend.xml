@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_template_recomm"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+
+    <ImageView
+        android:id="@+id/iv_albums_recomm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:srcCompat="@mipmap/test"/>
+
+    <TextView
+        android:id="@+id/tv_ingredients_recomm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="4dp"
+        android:layout_below="@+id/tv_title_recomm"
+        android:layout_toEndOf="@+id/iv_albums_recomm"
+        android:maxLines="2"
+        android:text="玫瑰腐乳,适量;盐,适量;八角,适量;草果,适量;香叶,适量;料酒,适量;米醋,适量;生姜,适量"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/tv_title_recomm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center"
+        android:layout_toEndOf="@+id/iv_albums_recomm"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="2dp"
+        android:text="秘制红烧肉"
+        android:textSize="26sp"/>
+</RelativeLayout>
