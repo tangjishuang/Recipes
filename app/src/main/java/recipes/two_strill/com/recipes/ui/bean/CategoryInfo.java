@@ -1,12 +1,13 @@
 package recipes.two_strill.com.recipes.ui.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by SD on 2018/10/16.
  */
 
-public class CategoryInfo {
+public class CategoryInfo implements Serializable {
     /**
      * resultcode : 200
      * reason : Success
@@ -94,7 +95,7 @@ public class CategoryInfo {
             this.list = list;
         }
 
-        public static class ListBean {
+        public static class ListBean implements Serializable{
             /**
              * id : 1
              * name : 家常菜

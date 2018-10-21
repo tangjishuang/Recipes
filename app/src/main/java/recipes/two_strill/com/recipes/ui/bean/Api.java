@@ -25,6 +25,9 @@ public interface Api {
     Observable<CategoryInfo> getCategory(@Query("key") String key, @Query("parentid")String parentid);
 
     //按标签检索菜谱：http://apis.juhe.cn/cook/index
+    @GET("index")
+    Observable<RecipesInfo> getIndex(@Query("key") String key, @Query("cid")String cid);
+
 
 
     //按照菜谱ID查看详情：http://apis.juhe.cn/cook/queryid

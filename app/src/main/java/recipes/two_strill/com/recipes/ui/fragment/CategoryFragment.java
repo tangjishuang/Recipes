@@ -1,9 +1,11 @@
 package recipes.two_strill.com.recipes.ui.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.mikepenz.materialdrawer.model.ContainerDrawerItem;
 import com.wq.android.lib.verticaltablayout.VerticalTabLayout;
 
 import java.util.ArrayList;
@@ -25,21 +28,23 @@ import recipes.two_strill.com.recipes.R;
 import recipes.two_strill.com.recipes.ui.adapter.MyAdapter;
 import recipes.two_strill.com.recipes.ui.bean.Api;
 import recipes.two_strill.com.recipes.ui.bean.CategoryInfo;
-import recipes.two_strill.com.recipes.ui.bean.City;
+import recipes.two_strill.com.recipes.ui.bean.FragmentInfo;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * 分类
+ * 分类&食材
  * Created by SD on 2018/8/18.
  */
 
+@SuppressLint("ValidFragment")
 public class CategoryFragment extends Fragment {
 
     private VerticalTabLayout tabLayout;
     private RecyclerView recyclerView;
     private LinearLayoutManager manager;
     private String[] tabTxt = new String[17];
+    private String[] tabTxtSruff = new String[11];
     //判读是否是recyclerView主动引起的滑动，true- 是，false- 否，由tablayout引起的
     private boolean isRecyclerScroll;
     //记录上一次位置，防止在同一内容块里滑动 重复定位到tablayout
@@ -50,10 +55,13 @@ public class CategoryFragment extends Fragment {
     Context mContext ;
     private Api api;
     List<CategoryInfo.ResultBean> mResultBean = new ArrayList<CategoryInfo.ResultBean>();
+    List<CategoryInfo.ResultBean> mResultBeanStuff = new ArrayList<CategoryInfo.ResultBean>();
+    private int mFragmentPsition;//mFragmentPsition=1代表是分类页，2代表食材页
 
-    private ArrayList<City> city_hot;
-
-
+    @SuppressLint("ValidFragment")
+    public CategoryFragment(int fragmentPsition) {
+        mFragmentPsition = fragmentPsition;
+    }
 
     @Nullable
     @Override
@@ -64,50 +72,17 @@ public class CategoryFragment extends Fragment {
         mContext= getActivity().getApplicationContext();
         //a[1] = tabTxt[1];
 
-        city_hot = new ArrayList<City>();
-        hotCityInit();
         initData();
-
 
         return view;
     }
 
-    /**
-     * 热门城市
-     */
-    public void hotCityInit() {
-        City city = new City("上海", "2");
-        city_hot.add(city);
-        city = new City("北京", "2");
-        city_hot.add(city);
-        city = new City("广州", "2");
-        city_hot.add(city);
-        city = new City("深圳", "2");
-        city_hot.add(city);
-        city = new City("武汉", "2");
-        city_hot.add(city);
-        city = new City("天津", "2");
-        city_hot.add(city);
-        city = new City("西安", "2");
-        city_hot.add(city);
-        city = new City("南京", "2");
-        city_hot.add(city);
-        city = new City("杭州", "2");
-        city_hot.add(city);
-        city = new City("成都", "2");
-        city_hot.add(city);
-        city = new City("重庆", "2");
-        city_hot.add(city);
-    }
     private void initData() {
-
-        Log.i("initDate", "initDateaaaa");
         Retrofit retrofit = new Retrofit.Builder()
                                     .baseUrl("http://apis.juhe.cn/cook/")
                                     .addConverterFactory(GsonConverterFactory.create())
                                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                                     .build();
-
         api = retrofit.create(Api.class);
 
        /* Map<String, String> map = new HashMap<>();
@@ -122,7 +97,6 @@ public class CategoryFragment extends Fragment {
                 .subscribe(new Consumer<CategoryInfo>() {
                     @Override
                     public void accept(CategoryInfo categoryInfo) throws Exception {
-
                         setDate(categoryInfo);
                     }
                 });
@@ -134,40 +108,37 @@ public class CategoryFragment extends Fragment {
 
         List<CategoryInfo.ResultBean> resultBean = recipesInfo.getResult();
         int j = 0;
+        int f = 0;
         for (int i=0; i<resultBean.size();i++) {
-            if (resultBean.get(i).getParentId().equals("10001")|resultBean.get(i).getParentId().equals("10002")
-            |resultBean.get(i).getParentId().equals("10004")
-            |resultBean.get(i).getParentId().equals("10005")
-            |resultBean.get(i).getParentId().equals("10006")
-            |resultBean.get(i).getParentId().equals("10007")
-            |resultBean.get(i).getParentId().equals("10009")
-            |resultBean.get(i).getParentId().equals("10012")
-            |resultBean.get(i).getParentId().equals("10013")
-            |resultBean.get(i).getParentId().equals("10020")
-            |resultBean.get(i).getParentId().equals("10021")
-            |resultBean.get(i).getParentId().equals("10022")
-            |resultBean.get(i).getParentId().equals("10023")
-            |resultBean.get(i).getParentId().equals("10024")
-            |resultBean.get(i).getParentId().equals("10025")
-            |resultBean.get(i).getParentId().equals("10026")
-            |resultBean.get(i).getParentId().equals("10027")) {
+            if (resultBean.get(i).getParentId().equals("10001") | resultBean.get(i).getParentId().equals("10002")
+                        | resultBean.get(i).getParentId().equals("10004")
+                        | resultBean.get(i).getParentId().equals("10005")
+                        | resultBean.get(i).getParentId().equals("10006")
+                        | resultBean.get(i).getParentId().equals("10007")
+                        | resultBean.get(i).getParentId().equals("10009")
+                        | resultBean.get(i).getParentId().equals("10012")
+                        | resultBean.get(i).getParentId().equals("10013")
+                        | resultBean.get(i).getParentId().equals("10020")
+                        | resultBean.get(i).getParentId().equals("10021")
+                        | resultBean.get(i).getParentId().equals("10022")
+                        | resultBean.get(i).getParentId().equals("10023")
+                        | resultBean.get(i).getParentId().equals("10024")
+                        | resultBean.get(i).getParentId().equals("10025")
+                        | resultBean.get(i).getParentId().equals("10026")
+                        | resultBean.get(i).getParentId().equals("10027")) {
 
                 tabTxt[j] = resultBean.get(i).getName();
                 mResultBean.add(resultBean.get(i));
                 j = j + 1;
+            } else {
+
+                tabTxtSruff[f] = resultBean.get(i).getName();
+                mResultBeanStuff.add(resultBean.get(i));
+                f = f + 1;
             }
         }
 
-        Log.i("setDate", "setDate: "+tabTxt[0]+tabTxt[1]+tabTxt[2]);
-
         setVeTabLayout();
-
-
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
 
     }
 
@@ -176,8 +147,14 @@ public class CategoryFragment extends Fragment {
      */
     private void setVeTabLayout() {
         //tablayout设置标签
-        for (int i = 0; i < 17; i++) {
-            tabLayout.addTab(tabLayout.newTab().setText(tabTxt[i]));
+        if (mFragmentPsition == 1) {
+            for (int i = 0; i < 17; i++) {
+                tabLayout.addTab(tabLayout.newTab().setText(tabTxt[i]));
+            }
+        } else {
+            for (int i = 0; i < 11; i++) {
+                tabLayout.addTab(tabLayout.newTab().setText(tabTxtSruff[i]));
+            }
         }
 
         //计算内容块所在的高度，全屏高度-状态栏高度-tablayout的高度(这里固定高度50dp)，用于recyclerView的最后一个item view填充高度
@@ -187,7 +164,11 @@ public class CategoryFragment extends Fragment {
         int lastH = screenH - statusBarH;
         manager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(manager);
-        recyclerView.setAdapter(new MyAdapter(mContext, tabTxt, lastH, city_hot));
+        if (mFragmentPsition == 1) {
+            recyclerView.setAdapter(new MyAdapter(mContext, tabTxt, lastH, mResultBean,mFragmentPsition));
+        } else {
+            recyclerView.setAdapter(new MyAdapter(mContext, tabTxtSruff, lastH, mResultBeanStuff,mFragmentPsition));
+        }
 
         tabLayout.setOnTabSelectedListener(new VerticalTabLayout.OnTabSelectedListener() {
             @Override
@@ -224,6 +205,7 @@ public class CategoryFragment extends Fragment {
                     canScroll = false;
                     moveToPosition(manager, recyclerView, scrollToPosition);
                 }
+
             }
 
             @Override

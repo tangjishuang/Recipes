@@ -78,9 +78,7 @@ public class SearchActivity extends AppCompatActivity {
         RxView.clicks(mActionClearBtn).subscribe(new Consumer<Object>() {
             @Override
             public void accept(Object o) throws Exception {
-
                 mSearchTextView.setText("");
-
                 mActionClearBtn.setVisibility(View.GONE);
 
             }
@@ -90,22 +88,15 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-
                     String searchTxt = mSearchTextView.getText().toString().trim();
                     initData(searchTxt);
                     Log.i("mSearchTextView", "onEditorAction: " + mSearchTextView.getText());
 
                     if (searchTxt.isEmpty()) {//输入框中内容是空，清除键隐藏
-
                         mActionClearBtn.setVisibility(View.GONE);
-
                     } else {
-
                         mActionClearBtn.setVisibility(View.VISIBLE);
-
                     }
-
-
                 }
                 return false;
             }

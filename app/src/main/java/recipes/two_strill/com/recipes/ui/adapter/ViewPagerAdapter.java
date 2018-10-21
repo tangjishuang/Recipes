@@ -3,6 +3,7 @@ package recipes.two_strill.com.recipes.ui.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.ListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,8 @@ import recipes.two_strill.com.recipes.ui.fragment.StuffFragment;
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
 
-    private List<FragmentInfo> mFragments = new ArrayList<>(4);
+    //private List<FragmentInfo> mFragments = new ArrayList<>(4);
+    private List<Fragment> fragments = new ArrayList<>(4);
 
     public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -30,35 +32,38 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     private void initFragment() {
 
-        mFragments.add(new FragmentInfo("推荐", RecommendFragment.class));
+       /* mFragments.add(new FragmentInfo("推荐", RecommendFragment.class));
         mFragments.add(new FragmentInfo("分类", CategoryFragment.class));
         mFragments.add(new FragmentInfo("食材", StuffFragment.class));
-        mFragments.add(new FragmentInfo("我的", MineFragment.class));
-
+        mFragments.add(new FragmentInfo("我的", MineFragment.class));*/
+        fragments.add(new RecommendFragment());
+        fragments.add(new CategoryFragment(1));
+        fragments.add(new CategoryFragment(2));
+        fragments.add(new MineFragment());
 
     }
 
     @Override
     public Fragment getItem(int position) {
-        try {
+        /*try {
             return (Fragment) mFragments.get(position).getFragment().newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-        }
-        return null;
+        }*/
+        return fragments.get(position);
     }
 
     @Override
     public int getCount() {
-        return mFragments.size();
+        return fragments.size();
     }
 
-    @Override
+   /* @Override
     public CharSequence getPageTitle(int position) {
         return mFragments.get(position).getTitle();
-    }
+    }*/
 
 
 }

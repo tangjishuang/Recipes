@@ -9,17 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <!--<TextView
-        android:id="@+id/tv_content"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:textColor="#ffffff"
-        android:textSize="16sp" />-->
-
-
     <recipes.two_strill.com.recipes.ui.view.MyGridView
         android:id="@+id/recent_city"
         android:layout_width="match_parent"

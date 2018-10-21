@@ -1,30 +1,32 @@
 package recipes.two_strill.com.recipes.ui.view;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
-import java.util.Random;
 
 import recipes.two_strill.com.recipes.R;
-import recipes.two_strill.com.recipes.ui.bean.City;
+import recipes.two_strill.com.recipes.ui.activity.CategoryTapActivity;
+import recipes.two_strill.com.recipes.ui.bean.CategoryInfo;
 
 public class AnchorView extends LinearLayout {
 
     private TextView tvAnchor;
-    //private TextView tvContent;
-
-    private ArrayList<City> city_hot;
+    private GridView hotCity;
+    private Context mContext;
 
     public AnchorView(Context context) {
         this(context, null);
@@ -36,75 +38,54 @@ public class AnchorView extends LinearLayout {
 
     public AnchorView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        city_hot = new ArrayList<City>();
-        hotCityInit();
-        init(context);
+        this.mContext = context;
+        init();
     }
 
-
-    /**
-     * 热门城市
-     */
-    public void hotCityInit() {
-        City city = new City("快手菜", "2");
-        city_hot.add(city);
-        city = new City("家常菜", "2");
-        city_hot.add(city);
-        city = new City("创意菜", "2");
-        city_hot.add(city);
-        city = new City("素菜", "2");
-        city_hot.add(city);
-        city = new City("烘焙", "2");
-        city_hot.add(city);
-        city = new City("面食", "2");
-        city_hot.add(city);
-        city = new City("汤", "2");
-        city_hot.add(city);
-        city = new City("东北菜", "2");
-        city_hot.add(city);
-        city = new City("川菜", "2");
-        city_hot.add(city);
-        city = new City("粤菜", "2");
-        city_hot.add(city);
-        city = new City("京菜", "2");
-        city_hot.add(city);
-    }
-    private void init(Context context) {
-        View view = LayoutInflater.from(context).inflate(R.layout.view_anchor, this, true);
+    private void init() {
+        View view = LayoutInflater.from(mContext).inflate(R.layout.view_anchor, this, true);
         tvAnchor = view.findViewById(R.id.tv_anchor);
-        /*tvContent = view.findViewById(R.id.tv_content);*/
-        GridView hotCity = view.findViewById(R.id.recent_city);
-        hotCity.setAdapter(new HotCityAdapter(context, city_hot));
+        hotCity = view.findViewById(R.id.recent_city);
 
-        /*Random random = new Random();
-        int r = random.nextInt(256);
-        int g = random.nextInt(256);
-        int b = random.nextInt(256);
-        tvContent.setBackgroundColor(Color.rgb(r, g, b));*/
     }
 
     public void setAnchorTxt(String txt) {
         tvAnchor.setText(txt);
     }
 
-    /*public void setContentTxt(String txt, List<City> hotList) {
-        tvContent.setText(txt);
-    }*/
+    public void setCategoryTxt(final List<CategoryInfo.ResultBean.ListBean> resultBeanlist) {
 
-    class HotCityAdapter extends BaseAdapter {
+        hotCity.setAdapter(new CategoryListAdapter(mContext, resultBeanlist));
+        hotCity.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(mContext,
+                        resultBeanlist.get(i).getName(), Toast.LENGTH_SHORT).show();
+                CategoryInfo.ResultBean.ListBean listBean = resultBeanlist.get(i);
+
+                Intent intent = new Intent(mContext, CategoryTapActivity.class);
+                intent.putExtra("CategorylistBean", listBean);
+                mContext.startActivity(intent);
+
+            }
+        });
+    }
+
+
+    class CategoryListAdapter extends BaseAdapter {
         private Context context;
         private LayoutInflater inflater;
-        private List<City> hotCitys;
+        private List<CategoryInfo.ResultBean.ListBean> resultBeanlist;
 
-        public HotCityAdapter(Context context, List<City> hotCitys) {
+        public CategoryListAdapter(Context context, List<CategoryInfo.ResultBean.ListBean> resultBeanList) {
             this.context = context;
             inflater = LayoutInflater.from(this.context);
-            this.hotCitys = hotCitys;
+            this.resultBeanlist = resultBeanList;
         }
 
         @Override
         public int getCount() {
-            return hotCitys.size();
+            return resultBeanlist.size();
         }
 
         @Override
@@ -120,8 +101,8 @@ public class AnchorView extends LinearLayout {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             convertView = inflater.inflate(R.layout.item_city, null);
-            TextView city = (TextView) convertView.findViewById(R.id.city);
-            city.setText(hotCitys.get(position).getName());
+            TextView cai = (TextView) convertView.findViewById(R.id.city);
+            cai.setText(resultBeanlist.get(position).getName());
             return convertView;
         }
     }

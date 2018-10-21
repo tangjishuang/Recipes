@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import java.util.List;
 
 import recipes.two_strill.com.recipes.R;
-import recipes.two_strill.com.recipes.ui.bean.City;
+import recipes.two_strill.com.recipes.ui.bean.CategoryInfo;
 import recipes.two_strill.com.recipes.ui.view.AnchorView;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
@@ -18,13 +18,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private Context context;
     private String[] tabTxt;
     private int lastH;
-    private List<City> hotList;
+    private List<CategoryInfo.ResultBean> resultBeans;
+    private int mFragmentPsition; //mFragmentPsition=1代表是分类页，2代表食材页
 
-    public MyAdapter(Context context, String[] tabTxt, int lastH,List<City> hotList) {
+    public MyAdapter(Context context, String[] tabTxt, int lastH, List<CategoryInfo.ResultBean> resultBean, int fragmentPsition) {
         this.context = context;
         this.tabTxt = tabTxt;
         this.lastH = lastH;
-        this.hotList = hotList;
+        this.resultBeans = resultBean;
+        this.mFragmentPsition = fragmentPsition;
     }
 
     @Override
@@ -36,10 +38,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        //holder.anchorView.setContentTxt(tabTxt[position],hotList);
         holder.anchorView.setAnchorTxt(tabTxt[position]);
-
-
+        holder.anchorView.setCategoryTxt(resultBeans.get(position).getList());
 
 
         //判断最后一个view
@@ -48,13 +48,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 params.height = lastH;
                 holder.anchorView.setLayoutParams(params);
+
             }
         }
     }
 
     @Override
     public int getItemCount() {
-        return 17;
+        if (mFragmentPsition == 1) {
+            return 17;
+        } else {
+
+            return 11;
+        }
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -65,6 +71,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             anchorView = itemView.findViewById(R.id.anchorView);
         }
     }
+
 
 
 }
