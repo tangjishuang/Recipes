@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <com.wq.android.lib.verticaltablayout.VerticalTabLayout
+        android:id="@+id/tablayout"
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:background="#cccccc"
+        app:dividerColor="@android:color/holo_blue_dark"
+        app:dividerHeight="1px"
+        app:dividerPadding="15dp"
+        app:tabArrowColor="@android:color/holo_orange_dark"
+        app:tabArrowGravity="right"
+        app:tabArrowType="outer"
+        app:tabHeight="30dp"
+        app:tabIconPadding="8dp"
+        app:tabIndicatorColor="@android:color/holo_orange_dark"
+        app:tabIndicatorGravity="fill"
+        app:tabIndicatorWidth="15dp"
+        app:tabPaddingLeft="20dp"
+        app:tabSelectedTextColor="@android:color/white"
+        app:tabTextColor="#555555"
+        app:tabTextSize="10dp"
+        app:tabViewGravity="left" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_detail_imtro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="平时吃西瓜都把西瓜皮给扔了，一次看电视偶然发现西瓜是个好东西，西瓜皮含有丰富的糖类、矿物质、维生素，具有清热解毒、利尿等功效。用于消暑解渴、清热解毒，西瓜皮优于西瓜瓤，西瓜皮不再扔了，用西瓜皮炒毛豆可当下饭菜挺不错的."/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_detail_burden"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"/>
+
+</LinearLayout>
